@@ -1,12 +1,11 @@
 import streamlit as st
 from datetime import date, timedelta
 from scheduler import create_schedule
+from free_time import find_free_slots
 
-# 페이지 제목
 st.title("📚 스마트 학업 플래너")
 st.subheader("자동 스케줄러")
 
-# 과제 정보 입력
 course = st.text_input("과목명", "자료구조")
 task_name = st.text_input("과제 이름", "과제2")
 due_date = st.date_input(
@@ -20,21 +19,30 @@ hours = st.number_input(
     value=3
 )
 
-# 테스트용 공부 가능 시간 / 실제 시간표 연동 기능은 추후 추가
-tomorrow = date.today() + timedelta(days=1)
-
-free_slots = [
-    {
-        "date": (tomorrow + timedelta(days=i)).isoformat(),
-        "start": "13:00",
-        "end": "15:00"
-    }
-    for i in range(7)
+# 테스트용 수업 시간표
+classes = [
+    {"course": "자료구조", "day": "월", "start": "09:00", "end": "10:30"},
+    {"course": "통계학", "day": "월", "start": "13:00", "end": "15:00"}
 ]
 
-# 자동 스케줄러 실행
-if st.button("공부 계획 생성"):
+# 앞으로 7일 동안 수업을 제외한 빈 시간 계산
+weekdays = ["월", "화", "수", "목", "금", "토", "일"]
+tomorrow = date.today() + timedelta(days=1)
 
+free_slots = []
+
+for i in range(7):
+    target = tomorrow + timedelta(days=i)
+    day = weekdays[target.weekday()]
+
+    slots = find_free_slots(
+        classes,
+        target.isoformat(),
+        day
+    )
+    free_slots.extend(slots)
+
+if st.button("공부 계획 생성"):
     tasks = [{
         "course": course,
         "title": task_name,
