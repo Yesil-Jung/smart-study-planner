@@ -12,7 +12,7 @@
 ### 관련 파일
 - `scheduler.py`: 과제 정렬 및 자동 배치
 - `free_time.py`: 수업 시간을 제외한 빈 시간 계산
-- `scheduler_page.py`: Streamlit 웹페이지
+- `pages/2_scheduler.py`: Streamlit 웹페이지
 
 ### 실행 방법
 
@@ -22,7 +22,7 @@
 
 2. 프로젝트 폴더에서 다음 명령어를 실행합니다.
 
-    python -m streamlit run scheduler_page.py
+    python -m streamlit run pages/2_scheduler.py
 
 3. 웹페이지에서 과목명, 과제명, 마감일, 예상 소요 시간을 입력합니다.
 
